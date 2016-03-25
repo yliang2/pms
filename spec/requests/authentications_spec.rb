@@ -2,11 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "Authentications", type: :feature do
   describe "GET /authentications" do
-    it "has username and password field" do
-      visit login_path
-      expect(page).to have_field("name")
-      expect(page).to have_field("password")
-    end
+    let(:user) {user = create(:user)}
 
     it "Fails to login with wrong user name" do
       user = create(:user)
@@ -36,9 +32,16 @@ RSpec.describe "Authentications", type: :feature do
     end    
 
     it "redirect to authentication when a user is not authenticated" do
+      pending
       visit root_path
       expect(current_path).to be == login_path
     end  
+
+    it "redirect to password rest" do
+      visit login_path
+      page.find("#password_reset").click
+      expect(current_path).to be == new_password_resets_path
+    end
 
   end
 end

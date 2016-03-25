@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   root :to => "users#new"
   resource :sessions
   resource :users
+  resource :password_resets
 end

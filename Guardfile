@@ -25,7 +25,7 @@
 #  * 'just' rspec: 'rspec'
 
                   
-guard :rspec, cmd: "zeus rspec", all_on_start: false, all_after_pass: false, parallel: true do
+guard :rspec, cmd: 'zeus rspec', all_on_start: false, all_after_pass: false, parallel: true do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
