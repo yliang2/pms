@@ -39,6 +39,7 @@ group :test, :development do
   gem 'byebug'
   gem 'rtask-db-drop-connections', '~> 1.0'
   gem 'web-console', '~> 2.0'
+  gem 'sqlite3'
 end
 
 group :test do

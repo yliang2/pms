@@ -13,9 +13,12 @@ class PasswordResetsController < ApplicationController
     end
   end
 
-  private
-
-  def password_reset_params
-  	params.permit(:email)
+  def edit
+    @user = User.find_by_password_reset_token!(password_reset_params[:format])
   end
+
+  private
+    def password_reset_params
+    	params.permit(:email,:format)
+    end
 end
