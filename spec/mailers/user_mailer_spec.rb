@@ -18,7 +18,7 @@ RSpec.describe UserMailer do
 
 		it "include a correct password reset url" do
 			user.send_password_reset
-			expect(mail).to have_content(edit_password_resets_url(user.password_reset_token))
+			expect(mail).to have_content(edit_password_reset_url(user.password_reset_token))
 		end
 	end
 end

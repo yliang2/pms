@@ -6,7 +6,7 @@ RSpec.describe "PasswordResets", type: :feature do
   describe "Password_resets" do
 
     it "send reset email" do
-        visit new_password_resets_path        
+        visit new_password_reset_path        
     	fill_in "Email", :with => user.email
     	click_button "Rest Password"
     	expect(page).to have_content("Email sent")
@@ -15,19 +15,20 @@ RSpec.describe "PasswordResets", type: :feature do
     end
 
     it "does not email invaild email" do
-        visit new_password_resets_path
+        visit new_password_reset_path
         fill_in "Email", :with => "fake_" + user.email
         click_button "Rest Password"
         expect(page).to have_content("Invaild email address.")
-        expect(current_path).to be == new_password_resets_path        
+        expect(current_path).to be == new_password_reset_path        
     end
   end
 
   describe "#Password update" do
     it "render password update view" do
         user.send_password_reset
-        visit edit_password_resets_path(user.password_reset_token)
-        expect(current_path).to be == edit_password_resets_path(user.password_reset_token)        
+        visit edit_password_reset_path(user.password_reset_token)
+        expect(current_path).to be == edit_password_reset_path(user.password_reset_token)        
+        expect(page).to have_content("Reset Password")      
     end
   end
 end

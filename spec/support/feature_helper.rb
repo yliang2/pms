@@ -1,6 +1,6 @@
 module FeatureHelper
 	def new_registration_input(user)
-      visit new_users_path
+      visit new_user_path
       fill_in "user[name]", :with => user.name
       fill_in "user[email]", :with => user.email
       fill_in "user[password]", :with => user.password

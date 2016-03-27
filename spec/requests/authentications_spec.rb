@@ -40,7 +40,7 @@ RSpec.describe "Authentications", type: :feature do
     it "redirect to password rest" do
       visit login_path
       page.find("#password_reset").click
-      expect(current_path).to be == new_password_resets_path
+      expect(current_path).to be == new_password_reset_path
     end
 
   end
