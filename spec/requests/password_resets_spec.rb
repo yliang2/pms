@@ -29,6 +29,14 @@ RSpec.describe "PasswordResets", type: :feature do
         expect{visit edit_password_reset_path(@user.password_reset_token + "_fake_token")}.to raise_error(ActionController::RoutingError)             
     end
 
+    it "fail to edit password when token is vaild but time is expired" do
+        @user.send_password_reset
+        @user.password_reset_sent_at = 3.hours.ago
+        @user.save
+        expect{visit edit_password_reset_path(@user.password_reset_token)}.to raise_error(ActionController::RoutingError)              
+    end
+
+
     it "success to edit password when token is valid" do
         @user.send_password_reset
         visit edit_password_reset_path(@user.password_reset_token)
@@ -43,21 +51,19 @@ RSpec.describe "PasswordResets", type: :feature do
         visit edit_password_reset_path(@user.password_reset_token)
         fill_in "user[password]", :with => @user.password
         fill_in "user[password_confirmation]", :with =>""
-        click_button "Update Password"    
+        click_button "Update Password"
         expect(current_path).to be == edit_password_reset_path(@user.password_reset_token)
         expect(page).to have_content("Password update fail!")            
     end
 
     it "fail to update password when time is expired" do
         @user.send_password_reset
-        @user.password_reset_sent_at = 3.hours.ago
-        @user.save
         visit edit_password_reset_path(@user.password_reset_token)
+        @user.password_reset_sent_at = 3.hours.ago
+        @user.save        
         fill_in "user[password]", :with => @user.password
         fill_in "user[password_confirmation]", :with => @user.password_confirmation
-        click_button "Update Password"    
-        expect(current_path).to be == new_password_reset_path
-        expect(page).to have_content("Password update time has expired!")            
+        expect{click_button "Update Password"}.to raise_error(ActionController::RoutingError)    
     end
 
     it "success to update  password when time is not expired" do

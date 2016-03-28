@@ -15,7 +15,7 @@ class PasswordResetsController < ApplicationController
 
   def edit
     @user = User.find_by_password_reset_token(id_param[:id])
-    unless @user
+    unless @user && @user.password_reset_sent_at >= 2.hours.ago
       raise ActionController::RoutingError.new('Not Found') 
     end
   end
@@ -23,7 +23,7 @@ class PasswordResetsController < ApplicationController
   def update
     @user = User.find_by_password_reset_token(id_param[:id])
     if @user.password_reset_sent_at < 2.hours.ago
-       redirect_to new_password_reset_path, :alert => "Password update time has expired!"
+        raise ActionController::RoutingError.new('Not Found') 
     elsif @user.update(password_update_params)
       redirect_to root_path, :notice => "Password update successful!"
     else 
