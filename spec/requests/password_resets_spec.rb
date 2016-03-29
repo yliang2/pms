@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "PasswordResets", type: :feature do
   before(:each){ @user = create(:user,:password_reset_token => "test_pws_reset_token", :password_reset_sent_at => DateTime.now)}  
   
-  describe "Password_resets" do
+  describe "P#assword_resets create" do
 
     it "send reset email" do
         visit new_password_reset_path        
@@ -46,6 +46,16 @@ RSpec.describe "PasswordResets", type: :feature do
   end
 
   describe "#Password reset update" do
+    it "fail to update password  when passwords are not presented" do
+        @user.send_password_reset
+        visit edit_password_reset_path(@user.password_reset_token)
+        fill_in "user[password]", :with => ""
+        fill_in "user[password_confirmation]", :with =>""
+        click_button "Update Password"
+        expect(current_path).to be == edit_password_reset_path(@user.password_reset_token)
+        expect(page).to have_content("Password update fail!")            
+    end
+
     it "fail to update password  when passwords doesn't match" do
         @user.send_password_reset
         visit edit_password_reset_path(@user.password_reset_token)
@@ -54,7 +64,7 @@ RSpec.describe "PasswordResets", type: :feature do
         click_button "Update Password"
         expect(current_path).to be == edit_password_reset_path(@user.password_reset_token)
         expect(page).to have_content("Password update fail!")            
-    end
+    end    
 
     it "fail to update password when time is expired" do
         @user.send_password_reset
