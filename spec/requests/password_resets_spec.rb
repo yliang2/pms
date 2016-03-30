@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe "PasswordResets", type: :feature do
   before(:each){ @user = create(:user,:password_reset_token => "test_pws_reset_token", :password_reset_sent_at => DateTime.now)}  
   
-  describe "P#assword_resets create" do
+  describe "Password_resets create" do
 
-    it "send reset email" do
+    it "#send reset email" do
         visit new_password_reset_path        
     	fill_in "Email", :with => @user.email
     	click_button "Rest Password"
@@ -14,7 +14,7 @@ RSpec.describe "PasswordResets", type: :feature do
     	expect(current_path).to be == root_path
     end
 
-    it "does not email invaild email" do
+    it "#does not email invaild email" do
         visit new_password_reset_path
         fill_in "Email", :with => "fake_" + @user.email
         click_button "Rest Password"
@@ -23,13 +23,13 @@ RSpec.describe "PasswordResets", type: :feature do
     end
   end
 
-  describe "#Password reset edit" do
-    it "fail to edit password edit when token is invaild" do
+  describe "Password reset edit" do
+    it "#fail to edit password edit when token is invaild" do
         @user.send_password_reset
         expect{visit edit_password_reset_path(@user.password_reset_token + "_fake_token")}.to raise_error(ActionController::RoutingError)             
     end
 
-    it "fail to edit password when token is vaild but time is expired" do
+    it "#fail to edit password when token is vaild but time is expired" do
         @user.send_password_reset
         @user.password_reset_sent_at = 3.hours.ago
         @user.save
@@ -37,7 +37,7 @@ RSpec.describe "PasswordResets", type: :feature do
     end
 
 
-    it "success to edit password when token is valid" do
+    it "#success to edit password when token is valid" do
         @user.send_password_reset
         visit edit_password_reset_path(@user.password_reset_token)
         expect(current_path).to be == edit_password_reset_path(@user.password_reset_token)        
@@ -45,7 +45,7 @@ RSpec.describe "PasswordResets", type: :feature do
     end
   end
 
-  describe "#Password reset update" do
+  describe "Password reset update" do
     it "fail to update password  when passwords are not presented" do
         @user.send_password_reset
         visit edit_password_reset_path(@user.password_reset_token)

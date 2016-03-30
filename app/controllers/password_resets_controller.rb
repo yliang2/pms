@@ -1,5 +1,6 @@
 class PasswordResetsController < ApplicationController
   skip_before_action :authenticate	
+
   def new
   end
 
@@ -14,17 +15,12 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-    @user = User.find_by_password_reset_token(id_param[:id])
-    unless @user && @user.password_reset_sent_at >= 2.hours.ago
-      raise ActionController::RoutingError.new('Not Found') 
-    end
+    @user = User.authenticate_password!(id_param[:id], 2)
   end
 
   def update
-    @user = User.find_by_password_reset_token(id_param[:id])
-    if @user.password_reset_sent_at < 2.hours.ago
-        raise ActionController::RoutingError.new('Not Found') 
-    elsif @user.update(password_update_params)
+    @user = User.authenticate_password!(id_param[:id], 2)
+    if @user.update(password_update_params)
       redirect_to root_path, :notice => "Password update successful!"
     else 
       redirect_to edit_password_reset_path, :notice => "Password update fail!"
