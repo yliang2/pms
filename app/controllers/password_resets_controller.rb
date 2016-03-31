@@ -1,6 +1,6 @@
 class PasswordResetsController < ApplicationController
-  skip_before_action :authenticate	
-
+  helper ApplicationHelper
+  before_action :admin_permitted
   def new
   end
 
@@ -21,7 +21,7 @@ class PasswordResetsController < ApplicationController
   def update
     @user = User.authenticate_password!(id_param[:id], 2)
     if @user.update(password_update_params)
-      redirect_to root_path, :notice => "Password update successful!"
+      redirect_to login_path, :notice => "Password update successful!"
     else 
       redirect_to edit_password_reset_path, :notice => "Password update fail!"
     end
@@ -34,5 +34,5 @@ class PasswordResetsController < ApplicationController
 
     def password_update_params
       params.require(:user).permit(:password, :password_confirmation)
-    end    
+    end
 end

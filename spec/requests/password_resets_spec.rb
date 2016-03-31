@@ -1,9 +1,27 @@
 require 'rails_helper'
 
 RSpec.describe "PasswordResets", type: :feature do
-  before(:each){ @user = create(:user,:password_reset_token => "test_pws_reset_token", :password_reset_sent_at => DateTime.now)}  
+  before(:each) do
+     @user = create(:user,:password_reset_token => "test_pws_reset_token", :password_reset_sent_at => DateTime.now)
+     @admin = create(:user, :email => "admin@pms.com", :name => "admin", :admin => true)
+     login(@admin)
+  end     
   
   describe "Password_resets create" do
+
+    it "#can not reset email if not admin" do
+        visit logout_path
+        visit new_password_reset_path
+        expect(current_path).to be == login_path
+        @admin.admin = false
+        @admin.save
+        visit logout_path
+        login(@admin)
+        visit new_password_reset_path
+        expect(current_path).to be == login_path
+        expect(page).to have_content("Only admin permitted!")              
+    end
+
 
     it "#send reset email" do
         visit new_password_reset_path        
@@ -11,7 +29,7 @@ RSpec.describe "PasswordResets", type: :feature do
     	click_button "Rest Password"
     	expect(page).to have_content("Email sent")
     	expect(last_email.to).to include(@user.email)
-    	expect(current_path).to be == login_path
+    	expect(current_path).to be == root_path
     end
 
     it "#does not email invaild email" do

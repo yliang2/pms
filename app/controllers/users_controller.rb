@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+	before_action :admin_permitted
 	def index
 	end
 
@@ -8,6 +9,20 @@ class UsersController < ApplicationController
 
 	def new
 		@user = User.new
+	end
+
+	def edit
+		@user = current_user #User.find_by_id(current_user.id)
+	end
+
+	def update
+		@user = current_user
+		@user.update(user_params)
+		if @user.save
+			redirect_to root_path, :notice => "Update successful!"
+		else
+			render "edit", :noitce => "Update faile!"
+		end	
 	end
 
 	def create

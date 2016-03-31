@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
 	has_secure_password
 
-	validates_uniqueness_of :email, :name
+	validates_uniqueness_of :email, :name, on: :create
 	validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
 	validates_format_of :password, with: /\A(?=.*\d)(?=.*([a-z]|[A-Z]))([\x20-\x7E]){6,40}\z/i, :message => "contains at least 6 characters (A-Z, 0-9)"
 	validates_length_of :name, minimum: 3, maximum: 20

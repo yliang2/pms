@@ -25,7 +25,7 @@
 #  * 'just' rspec: 'rspec'
 
 rspec_options = {
-  results_file: 'tmp/guard_rspec_results.txt', # << add this option to match above path in custom_plan.rb
+  #results_file: 'tmp/guard_rspec_results.txt', # << add this option to match above path in custom_plan.rb
   cmd: "zeus rspec",
   all_after_pass: true,
   failed_mode: :focus,

@@ -6,17 +6,10 @@ RSpec.describe "UserRegistrations", type: :feature do
     before(:each) do
       @admin = create(:user, :email => "admin@pms.com", :name => "admin")
       login(@admin)
-      @user = build(:user, :id => 1)
-    end 
-
-    it "register @user as admin" do
-      new_registration_input(@user)
-      click_button "Create User"
-      expect(current_path).to be == login_path
-      expect(page).to have_content("Signed up!")
+      @user = build(:user)
     end    
 
-    it "fails to register @user when @user email exist" do
+    it "fails to register user when @user email exist" do
 	    new_registration_input(@user)
       click_button "Create User"
       @user.name = "diff_" + @user.name
@@ -26,7 +19,7 @@ RSpec.describe "UserRegistrations", type: :feature do
       expect(page).to_not have_content("Name has already been taken")
     end
 
-    it "fails to register @user when @user name exist" do
+    it "fails to register user when @user name exist" do
 	    new_registration_input(@user)
       click_button "Create User"
       @user.email = "diff_" + @user.email
@@ -36,7 +29,7 @@ RSpec.describe "UserRegistrations", type: :feature do
       expect(page).to_not have_content("Email has already been taken")
     end    
 
-    it "fails to register @user when @user name exist" do
+    it "fails to register user when @user name exist" do
       new_registration_input(@user)
       click_button "Create User"
       @user.email = "diff_" + @user.email
@@ -44,6 +37,13 @@ RSpec.describe "UserRegistrations", type: :feature do
       click_button "Create User"
       expect(page).to have_content("Name has already been taken")
       expect(page).to_not have_content("Email has already been taken")
+    end     
+
+    it "register @user as admin" do
+      new_registration_input(@user)
+      click_button "Create User"
+      expect(current_path).to be == login_path
+      expect(page).to have_content("Signed up!")
     end     
   end
 end
