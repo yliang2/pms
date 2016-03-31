@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
-	skip_before_action :authenticate
 	def index
 	end
 
 	def show
+
 	end
 
 	def new
@@ -13,9 +13,9 @@ class UsersController < ApplicationController
 	def create
 		@user = User.new(user_params)
 		if @user.save
-			redirect_to root_url, :notice => "Signed up!"
+			redirect_to login_path, :notice => "Signed up!"
 		else
-			render "new"
+			render "new", :notice => "Invaild input!"
 		end
 	end
 

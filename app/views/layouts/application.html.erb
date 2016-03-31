@@ -11,6 +11,10 @@
       <% flash.each do |name, msg| %>
         <%= content_tag :div, msg, id: "flash_#{name}" %>
       <% end %>
+      <% if current_user %>
+        You are login as:<%= current_user.name %> |
+        <%= link_to("logout", logout_path) %>
+      <% end %>
       <%= yield %>
     </div>
 </body>

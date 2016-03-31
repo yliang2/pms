@@ -24,8 +24,15 @@
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
+rspec_options = {
+  results_file: 'tmp/guard_rspec_results.txt', # << add this option to match above path in custom_plan.rb
+  cmd: "zeus rspec",
+  all_after_pass: true,
+  failed_mode: :focus,
+  parallel: true
+}
                   
-guard :rspec, cmd: 'zeus rspec', all_on_start: false, all_after_pass: false, parallel: true do
+guard :rspec, rspec_options do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
@@ -67,5 +74,5 @@ guard :rspec, cmd: 'zeus rspec', all_on_start: false, all_after_pass: false, par
   watch(%r{^spec/acceptance/(.+)\.feature$})
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) do |m|
     Dir[File.join("**/#{m[1]}.feature")][0] || "spec/acceptance"
-  end
+  end  
 end

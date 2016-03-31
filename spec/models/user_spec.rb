@@ -7,7 +7,7 @@ RSpec.describe User, type: :model do
 		it "checks email format" do
 			@user.email = ""
 			@user.save
-			expect(@user.errors.size).to eq(2)
+			expect(@user.errors.size).to eq(1)
 			@user.email = "abc"
 			@user.save
 			expect(@user.errors.size).to eq(1)
@@ -22,7 +22,7 @@ RSpec.describe User, type: :model do
 		it "checks @user name length" do
 			@user.name = ""
 			@user.save
-			expect(@user.errors.size).to eq(2)
+			expect(@user.errors.size).to eq(1)
 			@user.name = "ac"
 			@user.save
 			expect(@user.errors.size).to eq(1)
@@ -38,7 +38,7 @@ RSpec.describe User, type: :model do
 			@user.password = ""
 			@user.password_confirmation = ""
 			@user.save			
-			expect(@user.errors.size).to eq(2)			
+			expect(@user.errors.size).to eq(1)			
 			@user.password = "a234c"
 			@user.password_confirmation = @user.password
 			@user.save			

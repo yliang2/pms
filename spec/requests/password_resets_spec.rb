@@ -11,7 +11,7 @@ RSpec.describe "PasswordResets", type: :feature do
     	click_button "Rest Password"
     	expect(page).to have_content("Email sent")
     	expect(last_email.to).to include(@user.email)
-    	expect(current_path).to be == root_path
+    	expect(current_path).to be == login_path
     end
 
     it "#does not email invaild email" do
@@ -84,7 +84,7 @@ RSpec.describe "PasswordResets", type: :feature do
         fill_in "user[password]", :with => @user.password
         fill_in "user[password_confirmation]", :with => @user.password_confirmation
         click_button "Update Password"    
-        expect(current_path).to be == root_path
+        expect(current_path).to be == login_path
         expect(page).to have_content("Password update successful!")    
     end
   end
