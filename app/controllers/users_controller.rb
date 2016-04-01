@@ -5,7 +5,7 @@ class UsersController < ApplicationController
 	end
 
 	def show
-
+		@user = User.find_by_id(params[:id])
 	end
 
 	def new
@@ -20,7 +20,7 @@ class UsersController < ApplicationController
 		@user = User.find_by_id(params[:id])
 		@user.update(user_params)
 		if @user.save
-			redirect_to root_path, :notice => "Update successful!"
+			redirect_to user_path(@user), :notice => "Update successful!"
 		else
 			render "edit", :noitce => "Update fail!"
 		end	
@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
 		def owner_permitted
 			unless current_user && (current_user.id.to_i == params[:id].to_i || current_user.admin?)
-				flash[:notice] = "Only owner permitted!" 
+				flash[:notice] = "Only owner or admin permitted!" 
 				redirect_to login_path
 			end				
 		end

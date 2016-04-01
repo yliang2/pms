@@ -1,0 +1,24 @@
+
+<h1>User Profile</h1>
+
+<% if @user.errors.any? %>
+  <div class="error_messages">
+    <h2>Form is invalid</h2>
+    <ul>
+      <% for message in @user.errors.full_messages %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="field">
+  Name: <%= @user.name %>
+</div>  
+<div class="field">
+  Email: <%= @user.email %>
+</div>
+<div class="field">
+  Is admin? <%=check_box_tag 'admin','value', @user.admin? ? true : false, disabled: true %>
+</div>
+
