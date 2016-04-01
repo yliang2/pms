@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-	before_action :admin_permitted
+	before_action :admin_permitted, only: [:new, :creat]
+	before_action :owner_permitted
 	def index
 	end
 
@@ -12,16 +13,16 @@ class UsersController < ApplicationController
 	end
 
 	def edit
-		@user = current_user #User.find_by_id(current_user.id)
+		@user = User.find_by_id(params[:id])
 	end
 
 	def update
-		@user = current_user
+		@user = User.find_by_id(params[:id])
 		@user.update(user_params)
 		if @user.save
 			redirect_to root_path, :notice => "Update successful!"
 		else
-			render "edit", :noitce => "Update faile!"
+			render "edit", :noitce => "Update fail!"
 		end	
 	end
 
@@ -37,5 +38,12 @@ class UsersController < ApplicationController
 	private
 		def user_params
 			params.require(:user).permit(:name, :email, :password, :password_confirmation)
+		end
+
+		def owner_permitted
+			unless current_user && (current_user.id.to_i == params[:id].to_i || current_user.admin?)
+				flash[:notice] = "Only owner permitted!" 
+				redirect_to login_path
+			end				
 		end
 end

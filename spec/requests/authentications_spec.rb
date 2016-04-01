@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe "Authentications", type: :feature do
   describe "Authentications" do
     before(:each) do
-       @user = create(:user,:password_reset_token => "test_pws_reset_token", :password_reset_sent_at => DateTime.now)
-       @admin = create(:user, :email => "admin@pms.com", :name => "admin")
+       @user = create(:user, :id => 1, :password_reset_token => "test_pws_reset_token", :password_reset_sent_at => DateTime.now)
+       @admin = create(:user, :id => 2, :email => "admin@pms.com", :name => "admin")
     end 
 
     it "Fails to login with wrong user name" do
@@ -25,7 +25,7 @@ RSpec.describe "Authentications", type: :feature do
       login(@user)
       expect(page).to have_content("You are login as:#{@user.name}")
       expect(page).to have_content("logout")
-      expect(current_path).to be == root_path
+      expect(current_path).to be == user_path(@user)
     end    
 
     it "Logout current @user" do
@@ -42,11 +42,11 @@ RSpec.describe "Authentications", type: :feature do
       login(@user)
       expect(page).to have_content("You are login as:#{@user.name}")
       visit login_path
-      new_login_user = create(:user, :name => "second_" + @user.name, :email => "second_" + @user.email)
-      login(new_login_user)
+      @new_login_user = create(:user, :id => 3, :name => "second_" + @user.name, :email => "second_" + @user.email)
+      login(@new_login_user)
       expect(page).to have_content("#{@user.name} logged out!")
-      expect(page).to have_content("You are login as:#{new_login_user.name}")
-      expect(current_path).to be == root_path
+      expect(page).to have_content("You are login as:#{@new_login_user.name}")
+      expect(current_path).to be == user_path(@new_login_user.id)
     end       
 
     it "redirect to authentication when a user is not authenticated" do

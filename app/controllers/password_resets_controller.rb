@@ -1,5 +1,4 @@
 class PasswordResetsController < ApplicationController
-  helper ApplicationHelper
   before_action :admin_permitted
   def new
   end
@@ -8,7 +7,7 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by_email(id_param[:email])
     if @user
       @user.send_password_reset
-  	  redirect_to root_path, :notice => "Email sent with password reset instructions."
+  	  redirect_to login_path, :notice => "Email sent with password reset instructions."
     else
       redirect_to new_password_reset_path, :notice => "Invaild email address. Please enter a vaild email address!"
     end

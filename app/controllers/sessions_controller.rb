@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   def create
   	@user = User.find_by_name(params[:name])
   	if @user && @user.authenticate(params[:password])
-  		redirect_to root_url, :notice => current_user.nil? ? "" : "#{current_user.name} logged out!"
+  		redirect_to user_path(@user), :notice => current_user.nil? ? "" : "#{current_user.name} logged out!"
       reset_current_user(@user)
   	else
   		redirect_to login_path, :notice => "Wrong username or password"

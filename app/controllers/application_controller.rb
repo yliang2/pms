@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
   			current_user
   		end
   	end
+
     def admin_permitted
       unless current_user && current_user.admin?
         redirect_to login_path, :notice => "Only admin permitted!" 
