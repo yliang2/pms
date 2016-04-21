@@ -10,20 +10,20 @@ RSpec.describe "UserRegistrations", type: :feature do
     end    
 
     it "fails to register user when @user email exist" do
-	    new_registration_input(@user)
+      new_registration_input(@user)
       click_button "Create User"
       @user.name = "diff_" + @user.name
-	    new_registration_input(@user)
+      new_registration_input(@user)
       click_button "Create User"
       expect(page).to have_content("Email has already been taken")
       expect(page).to_not have_content("Name has already been taken")
     end
 
     it "fails to register user when @user name exist" do
-	    new_registration_input(@user)
+      new_registration_input(@user)
       click_button "Create User"
       @user.email = "diff_" + @user.email
-	    new_registration_input(@user)
+      new_registration_input(@user)
       click_button "Create User"
       expect(page).to have_content("Name has already been taken")
       expect(page).to_not have_content("Email has already been taken")
