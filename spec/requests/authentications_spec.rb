@@ -21,14 +21,14 @@ RSpec.describe "Authentications", type: :feature do
       expect(page).to have_content("Wrong username or password")
     end
 
-    it "Successfully login with correct @user name and password" do
+    it "Successfully login with correct user name and password" do
       login(@user)
       expect(page).to have_content("You are login as:#{@user.name}")
       expect(page).to have_content("logout")
       expect(current_path).to be == user_path(@user)
     end    
 
-    it "Logout current @user" do
+    it "Logout current user" do
       visit logout_path
       expect(page).to have_content("logged out!")
       expect(current_path).to be == login_path
@@ -54,7 +54,7 @@ RSpec.describe "Authentications", type: :feature do
       expect(current_path).to be == login_path
     end  
 
-    it "redirect to password rest" do
+    it "redirect to password reset" do
       login(@admin)
       visit login_path
       page.find("#password_reset").click
