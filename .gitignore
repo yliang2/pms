@@ -14,3 +14,4 @@
 !/log/.keep
 /tmp
 /db/*.sqlite3
+.env
